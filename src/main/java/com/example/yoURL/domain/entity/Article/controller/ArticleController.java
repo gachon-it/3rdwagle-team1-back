@@ -31,26 +31,23 @@ import static com.example.yoURL.domain.entity.Article.controller.ArticleResponse
 public class ArticleController {
 
     private final ArticleService articleService;
-    private final FolderService folderService;
     private final FolderRepository folderRepository;
     private final ArticleRepository articleRepository;
 
     @PostMapping("/article")
     @Operation(summary = "게시물 등록 API")
     public ApiResponse<Void> createArticle(@RequestBody @Valid ArticleRequestDTO.CreateArticle request) {
+        if (articleRepository.existsByUrl(request.getUrl())) {
+            return ApiResponse.response(ADD_ARTICLE_FAILED.getCode(), "An article with this URL already exists.");
+        }
         articleService.createArticle(request);
+
         return ApiResponse.response(ADD_ARTICLE_SUCCESS.getCode(), ADD_ARTICLE_SUCCESS.getMessage());
+
     }
 
-//    @GetMapping("/")
-//    @Operation(summary = "폴더 if게시물 전체 조회 API")
-//    public ApiResponse<List<ArticleResponseDTO>> getAllArticles() {
-//        List<ArticleResponseDTO> responseDTO = articleService.getAllArticles();
-//        return ApiResponse.response(GET_ALL_ARTICLE_SUCCESS.getCode(), GET_ALL_ARTICLE_SUCCESS.getMessage(), responseDTO);
-//    }
-
     @GetMapping("/{folder_id}")
-    @Operation(summary = "폴더 id 기반 게시물,폴더 전체 조회 API")
+    @Operation(summary = "폴더 id 기반 게시물 전체 조회 API")
     public ApiResponse<List<ArticleResponseDTO>> getLowerFolderArticleById(@PathVariable Long folder_id){
         Folder folder = folderRepository.findById(folder_id).orElse(null);
         long memberId = folder.getMember().getId();
@@ -59,12 +56,12 @@ public class ArticleController {
         return ApiResponse.response(GET_ARTICLE_SUCCESS.getCode(), GET_ARTICLE_SUCCESS.getMessage(), articleResponseDTOList);
     }
 
-    @GetMapping("/article/{folder_id}")
-    @Operation(summary = "특정 폴더 id 기반 게시물 단건 조회 API")
-    public ApiResponse<ArticleResponseDTO> getArticleById(@PathVariable Long folder_id){
+    @GetMapping("/article/{article_id}")
+    @Operation(summary = "게시물 id 기반 조회 API")
+    public ApiResponse<ArticleResponseDTO> getArticleById(@PathVariable Long article_id){
 
-        folderRepository.findById(folder_id);
-        ArticleResponseDTO responseDTO = articleService.getArticleById(folder_id);
+        articleRepository.findById(article_id);
+        ArticleResponseDTO responseDTO = articleService.getArticleById(article_id);
 
         return ApiResponse.response(GET_ARTICLE_SUCCESS.getCode(), GET_ARTICLE_SUCCESS.getMessage(), responseDTO);
     }

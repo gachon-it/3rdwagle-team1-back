@@ -8,4 +8,5 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
 //    List<Article> findAllByMemberId(Long memberId);
         List<Article> findByMemberId(Long memberId);
 //    Article findByName(String name);
+boolean existsByUrl(String url);
 }
