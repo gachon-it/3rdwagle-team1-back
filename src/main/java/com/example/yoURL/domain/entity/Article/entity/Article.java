@@ -1,5 +1,6 @@
 package com.example.yoURL.domain.entity.Article.entity;
 
+import com.example.yoURL.domain.entity.Folder.entity.entity.Folder;
 import com.example.yoURL.domain.entity.Member.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
@@ -46,6 +47,9 @@ public class Article {
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "folder_id")
+    private Folder folder;
 
     public enum Rating {
         ONE, TWO, THREE, FOUR, FIVE
