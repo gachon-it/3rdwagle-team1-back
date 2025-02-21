@@ -12,4 +12,5 @@ import lombok.NoArgsConstructor;
 public class UpdateDTO {
     private String name;
     private Long id;
+    private Long memberid;
 }

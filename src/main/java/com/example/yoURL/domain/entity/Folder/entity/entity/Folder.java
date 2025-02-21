@@ -32,12 +32,6 @@ public class Folder extends BaseEntity {
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
-    // ✅ 북마크 상태 (0: 북마크 안됨, 1: 북마크 됨)
-    @Column(name = "bookmark", nullable = false)
-    private int bookmark = 0;
-
-    @OneToMany(mappedBy = "folder", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Article> articles = new ArrayList<>();  // ✅ NPE 방지
 
     @ManyToMany(mappedBy = "likes")
     private List<Member> likeMember = new ArrayList<>();
@@ -47,8 +41,4 @@ public class Folder extends BaseEntity {
         this.name = newName;
     }
 
-    // ✅ 북마크 토글 메서드
-    public void toggleBookmark() {
-        this.bookmark = (this.bookmark == 0) ? 1 : 0;
-    }
 }

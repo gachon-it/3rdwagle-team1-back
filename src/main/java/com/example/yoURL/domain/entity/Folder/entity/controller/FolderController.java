@@ -1,6 +1,7 @@
 package com.example.yoURL.domain.entity.Folder.entity.controller;
 
 import com.example.yoURL.domain.entity.Folder.entity.dto.FolderDTO;
+import com.example.yoURL.domain.entity.Folder.entity.dto.UpdateDTO;
 import com.example.yoURL.domain.entity.Folder.entity.response.FolderResponse;
 import com.example.yoURL.domain.entity.Folder.entity.service.FolderLikeService;
 import com.example.yoURL.domain.entity.Folder.entity.service.FolderService;
@@ -33,8 +34,8 @@ public class FolderController {
     // ✅ 폴더 수정
     @Operation(summary = "폴더 수정")
     @PutMapping
-    public ApiResponse<FolderResponse> updateFolder(@RequestBody FolderDTO req) {
-        FolderResponse folder = folderService.updateFolder(req.getId(), req.getName());
+    public ApiResponse<FolderResponse> updateFolder(@RequestBody UpdateDTO req) {
+        FolderResponse folder = folderService.updateFolder(req.getMemberid(), req.getId(), req.getName());
         return ApiResponse.response(UPDATE_SUCCESS.getCode(), UPDATE_SUCCESS.getMessage(), folder);
     }
 
