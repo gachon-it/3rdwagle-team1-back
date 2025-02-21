@@ -1,13 +1,12 @@
 package com.example.yoURL.domain.entity.Article.entity;
 
-import com.example.yoURL.domain.entity.Folder.entity.entity.Folder;
+import com.example.yoURL.domain.entity.Member.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "article",
-       indexes = @Index(name = "IDX_ARTICLE_FOLDER_ID", columnList = "folder_id"))
+@Table(name = "article")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -20,9 +19,6 @@ public class Article {
     @Column(name = "article_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "folder_id", nullable = false)
-    private Folder folder;
 
     @Column(name = "name", length = 100)
     private String name;
@@ -46,9 +42,13 @@ public class Article {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id", nullable = false)
+    private Member member;
 
 
     public enum Rating {
         ONE, TWO, THREE, FOUR, FIVE
     }
+
 }
