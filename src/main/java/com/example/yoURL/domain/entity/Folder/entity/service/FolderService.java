@@ -1,5 +1,6 @@
 package com.example.yoURL.domain.entity.Folder.entity.service;
 
+import com.example.yoURL.domain.entity.Folder.entity.dto.FolderListResponse;
 import com.example.yoURL.domain.entity.Folder.entity.entity.Folder;
 import com.example.yoURL.domain.entity.Folder.entity.exception.FolderNotFoundException;
 import com.example.yoURL.domain.entity.Folder.entity.repository.FolderRepository;
@@ -71,15 +72,15 @@ public class FolderService {
 
 
 // ✅ 모든 폴더 조회 (게시물 제외)
-public List<FolderResponse> getAllFolders(Long memberId, String name) {
-    Optional<Folder> folders = folderRepository.findByMemberIdAndName(memberId, name);  // memberId로 폴더 조회
-    return folders.stream()
-            .map(folder -> FolderResponse.from(
-                    folder.getId(),
-                    folder.getName(),
-                    folder.getDate()
-            )) // 게시물 제외
-            .collect(Collectors.toList());
+    public FolderListResponse getAllFolders(Long memberId) {
+        List<FolderResponse> folderResponses = folderRepository.findAllByMemberId(memberId).stream()
+                .map(folder -> FolderResponse.from(
+                        folder.getId(),
+                        folder.getName(),
+                        folder.getDate()
+                ))
+                .toList();
+    return FolderListResponse.of(folderResponses);
 }
 
 
