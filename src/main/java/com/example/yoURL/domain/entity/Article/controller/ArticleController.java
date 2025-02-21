@@ -41,11 +41,11 @@ public class ArticleController {
         if (articleRepository.existsByUrl(request.getUrl())) {
             return ApiResponse.response(ADD_ARTICLE_FAILED.getCode(), "An article with this URL already exists.");
         }
+        articleService.createArticle(request);
 
         return ApiResponse.response(ADD_ARTICLE_SUCCESS.getCode(), ADD_ARTICLE_SUCCESS.getMessage());
 
     }
-
 
     @GetMapping("/{folder_id}")
     @Operation(summary = "폴더 id 기반 게시물,폴더 전체 조회 API")
