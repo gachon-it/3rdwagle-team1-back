@@ -6,36 +6,37 @@ import com.example.yoURL.domain.entity.Folder.entity.entity.Folder;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.cglib.core.Local;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
-public class FolderResponse {
+public class CreateFolderResponse {
     private final Long id;
     private final String name;
-    private final LocalDate date;
+    private LocalDate date;
 
     @Builder
-    private FolderResponse(Long id, String name, LocalDate date) {
+    private CreateFolderResponse(Long id, String name, LocalDate date) {
         this.id = id;
         this.name = name;
         this.date = date;
     }
 
-    public static FolderResponse from(Long id, String name, LocalDate date) {
-        return FolderResponse.builder()
-                .id(id)
-                .name(name)
-                .date(date)
+    public static CreateFolderResponse from(Folder folder) {
+        return CreateFolderResponse.builder()
+                .id(folder.getId())
+                .name(folder.getName())
                 .build();
     }
 
-    // `of` 메서드 수정: builder 사용
-    public static FolderResponse of(Long id, String name) {
-        return FolderResponse.builder()
+    // `of` method
+    public static CreateFolderResponse of(Long id, String name, LocalDate date) {
+        return CreateFolderResponse.builder()
                 .id(id)
                 .name(name)
+                .date(date)
                 .build();
     }
 }

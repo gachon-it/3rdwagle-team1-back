@@ -12,7 +12,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,7 +26,7 @@ public class FolderService {
     private final MemberRepository memberRepository;
 
     // ✅ 폴더 생성
-    public FolderResponse createFolder(Long member_id,String name) {
+    public FolderResponse createFolder(Long member_id, String name, LocalDate date) {
             Member member = memberRepository.findById(member_id)
         .orElseThrow(() -> new IllegalArgumentException("해당 멤버가 존재하지 않습니다."));
 
@@ -37,7 +39,8 @@ public class FolderService {
         // 폴더 생성
         Folder folder = Folder.builder()
                 .name(name)
-                .member(member)  // ✅ 반드시 Member를 설정해야 함
+                .member(member)
+                .date(date)
                 .build();
 
         Folder savedFolder = folderRepository.save(folder);
@@ -67,13 +70,19 @@ public class FolderService {
     }
 
 
-    // ✅ 모든 폴더 조회 (게시물 제외)
-    public List<FolderResponse> getAllFolders() {
-        List<Folder> folders = folderRepository.findAll();
-        return folders.stream()
-                .map(folder -> FolderResponse.of(folder.getId(), folder.getName())) // 게시물 제외
-                .collect(Collectors.toList());
-    }
+// ✅ 모든 폴더 조회 (게시물 제외)
+public List<FolderResponse> getAllFolders(Long memberId, String name) {
+    Optional<Folder> folders = folderRepository.findByMemberIdAndName(memberId, name);  // memberId로 폴더 조회
+    return folders.stream()
+            .map(folder -> FolderResponse.from(
+                    folder.getId(),
+                    folder.getName(),
+                    folder.getDate()
+            )) // 게시물 제외
+            .collect(Collectors.toList());
+}
+
+
 
 
     public void deleteFolder(Long memberId, String name) {
