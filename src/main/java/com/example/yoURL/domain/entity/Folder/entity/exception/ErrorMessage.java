@@ -11,5 +11,6 @@ public enum ErrorMessage {
     FOLDER_ALREADY_LIKED("이미 즐겨찾기로 등록한 폴더입니다."),
     FOLDER_NOT_LIKED("즐겨찾기로 등록되지 않은 폴더입니다.");
 
+
     private final String message;
 }

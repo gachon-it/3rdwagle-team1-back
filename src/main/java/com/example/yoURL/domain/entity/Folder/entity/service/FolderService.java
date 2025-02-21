@@ -1,6 +1,7 @@
 package com.example.yoURL.domain.entity.Folder.entity.service;
 
 import com.example.yoURL.domain.entity.Folder.entity.entity.Folder;
+import com.example.yoURL.domain.entity.Folder.entity.exception.FolderNotFoundException;
 import com.example.yoURL.domain.entity.Folder.entity.repository.FolderRepository;
 import com.example.yoURL.domain.entity.Folder.entity.response.FolderResponse;
 import com.example.yoURL.domain.entity.Member.entity.Member;
@@ -73,7 +74,7 @@ public class FolderService {
     public void deleteFolder(Long memberId, String name) {
     // Ensure the folder belongs to the authenticated member
     Folder folder = folderRepository.findByNameAndMemberId(name, memberId)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 유저의 폴더를 찾을 수 없습니다."));
+            .orElseThrow(FolderNotFoundException::new);
 
     folderRepository.delete(folder);
 }
