@@ -38,16 +38,14 @@ public class ArticleController {
     @PostMapping("/article")
     @Operation(summary = "게시물 등록 API")
     public ApiResponse<Void> createArticle(@RequestBody @Valid ArticleRequestDTO.CreateArticle request) {
-        articleService.createArticle(request);
+        if (articleRepository.existsByUrl(request.getUrl())) {
+            return ApiResponse.response(ADD_ARTICLE_FAILED.getCode(), "An article with this URL already exists.");
+        }
+
         return ApiResponse.response(ADD_ARTICLE_SUCCESS.getCode(), ADD_ARTICLE_SUCCESS.getMessage());
+
     }
 
-//    @GetMapping("/")
-//    @Operation(summary = "폴더 if게시물 전체 조회 API")
-//    public ApiResponse<List<ArticleResponseDTO>> getAllArticles() {
-//        List<ArticleResponseDTO> responseDTO = articleService.getAllArticles();
-//        return ApiResponse.response(GET_ALL_ARTICLE_SUCCESS.getCode(), GET_ALL_ARTICLE_SUCCESS.getMessage(), responseDTO);
-//    }
 
     @GetMapping("/{folder_id}")
     @Operation(summary = "폴더 id 기반 게시물,폴더 전체 조회 API")

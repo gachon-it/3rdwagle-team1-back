@@ -11,7 +11,8 @@ public enum ArticleResponseMessage {
         GET_ALL_ARTICLE_SUCCESS(HttpStatus.OK.value(), "게시글 모두 흭득에 성공했습니다."),
         GET_ARTICLE_SUCCESS(HttpStatus.OK.value(), "게시글 단건 흭득에 성공했습니다."),
         EDIT_ARTICLE_SUCCESS(HttpStatus.OK.value(), "게시글 수정 성공"),
-        DELETE_ARTICLE_SUCCESS(HttpStatus.OK.value(), "게시글 수정 성공")
+        DELETE_ARTICLE_SUCCESS(HttpStatus.OK.value(), "게시글 수정 성공"),
+        ADD_ARTICLE_FAILED(HttpStatus.FORBIDDEN.value(), "중복된url")
         ;
 
 
