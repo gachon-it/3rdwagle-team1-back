@@ -1,0 +1,82 @@
+package com.example.yoURL.domain.entity.Folder.entity.entity;
+
+import com.example.yoURL.domain.entity.Article.entity.Article;
+import com.example.yoURL.domain.entity.Member.entity.Member;
+import com.example.yoURL.global.common.entity.BaseEntity;
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+@Table(name = "folder",
+       indexes = {
+           @Index(name = "IDX_FOLDER_MEMBER_ID", columnList = "member_id"),
+           @Index(name = "IDX_FOLDER_PARENT_FOLDER_ID", columnList = "parent_folder_id")
+       })
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)  // 기본 생성자 보호
+@AllArgsConstructor
+@Builder
+public class Folder extends BaseEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "folder_id")
+    private Long id;
+
+    @Column(name = "name", length = 100, nullable = false)
+    private String name;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id", nullable = false)
+    private Member member;
+
+    // ✅ 북마크 상태 (0: 북마크 안됨, 1: 북마크 됨)
+    @Column(name = "bookmark", nullable = false)
+    private int bookmark = 0;
+
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_folder_id")
+    private Folder parentFolder;
+
+    @OneToMany(mappedBy = "parentFolder", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Folder> childFolders = new ArrayList<>();  // ✅ NPE 방지
+
+    @OneToMany(mappedBy = "folder", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Article> articles = new ArrayList<>();  // ✅ NPE 방지
+
+    // 폴더 이름 변경 메서드
+    public void rename(String newName) {
+        this.name = newName;
+    }
+
+    // ✅ 북마크 토글 메서드
+    public void toggleBookmark() {
+        this.bookmark = (this.bookmark == 0) ? 1 : 0;
+    }
+
+    // 부모 폴더 설정 메서드
+    public void setParentFolder(Folder parentFolder) {
+        this.parentFolder = parentFolder;
+        if (parentFolder != null) {
+            parentFolder.addChildFolder(this);
+        }
+    }
+
+    // 자식 폴더 추가 메서드 (중복 방지)
+    public void addChildFolder(Folder child) {
+        if (!this.childFolders.contains(child)) {
+            this.childFolders.add(child);
+            child.parentFolder = this;
+        }
+    }
+
+    // 자식 폴더 제거 메서드
+    public void removeChildFolder(Folder child) {
+        this.childFolders.remove(child);
+        child.parentFolder = null;
+    }
+}
