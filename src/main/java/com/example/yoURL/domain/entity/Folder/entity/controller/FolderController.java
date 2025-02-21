@@ -41,10 +41,4 @@ public class FolderController {
         return ApiResponse.response(DELETE_SUCCESS.getCode(), DELETE_SUCCESS.getMessage(), "삭제 완료");
     }
 
-    // ✅ 게시물 조회
-    @Operation(summary = "게시물 조회")
-    @GetMapping("/{folder_id}")
-    public ApiResponse<FolderResponse> getFolder(@RequestParam Long id) {
-        FolderResponse folder = folderService.
-    }
 }
