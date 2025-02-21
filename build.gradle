@@ -42,8 +42,6 @@ dependencies {
 	implementation 'software.amazon.awssdk:s3:2.29.46'
 
 	// MySQL
-	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
-	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 	runtimeOnly 'com.mysql:mysql-connector-j'
 
 	// Test
