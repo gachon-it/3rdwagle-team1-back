@@ -48,16 +48,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         authorize ->
                                 authorize
-                                        .requestMatchers("/v3/api-docs", "/v3/api-docs/**", "/swagger-ui.html",
-                                                "/swagger-ui/**", "/swagger/**").permitAll()
-                                        .requestMatchers("/favicon.ico").permitAll()
-                                        .requestMatchers("/ws", "/ws/**").permitAll()
-                                        .requestMatchers("/error").permitAll()
-                                        .requestMatchers("/health-check").permitAll()
-                                        .requestMatchers("/api/v1/members/*").permitAll()
-                                        .requestMatchers("/api/v1/**").authenticated()
-                                        .anyRequest().authenticated()
-
+                                        .requestMatchers("/**").permitAll()
                 )
                 .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(exceptioHandling ->
