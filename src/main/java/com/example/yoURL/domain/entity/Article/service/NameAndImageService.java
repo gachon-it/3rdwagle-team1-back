@@ -1,6 +1,5 @@
 package com.example.yoURL.domain.entity.Article.service;
 
-import com.example.yoURL.domain.entity.Article.service.openGraph.OpenGraph;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
@@ -45,8 +44,3 @@ public class NameAndImageService {
 
     }
 }
-
-
-
-
-

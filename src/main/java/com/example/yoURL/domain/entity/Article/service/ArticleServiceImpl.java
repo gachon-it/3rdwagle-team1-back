@@ -4,14 +4,12 @@ import com.example.yoURL.domain.entity.Article.dto.ArticleRequestDTO;
 import com.example.yoURL.domain.entity.Article.dto.ArticleResponseDTO;
 import com.example.yoURL.domain.entity.Article.entity.Article;
 import com.example.yoURL.domain.entity.Article.repository.ArticleRepository;
-import com.example.yoURL.domain.entity.Folder.entity.entity.Folder;
 import com.example.yoURL.domain.entity.Folder.entity.repository.FolderRepository;
 import com.example.yoURL.domain.entity.Member.entity.Member;
 import com.example.yoURL.domain.entity.Member.repository.MemberRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -107,9 +105,16 @@ public class ArticleServiceImpl implements ArticleService {
         Article article = articleRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Article not found"));
 
+        String url = request.getUrl();
+        if (!url.startsWith("http://") && !url.startsWith("https://")) {
+            url = "http://" + url;
+        }
+        if(!url.endsWith("/")){
+            url = url+"/";
+        }
 
         article.setName(request.getName());
-        article.setUrl(request.getUrl());
+        article.setUrl(url);
         article.setDescription(request.getDescription());
         article.setImageUrl(request.getImageUrl());
         article.setRating(request.getRating());
