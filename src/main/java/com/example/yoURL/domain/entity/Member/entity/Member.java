@@ -1,6 +1,6 @@
 package com.example.yoURL.domain.entity.Member.entity;
 
-import com.example.yoURL.domain.entity.Folder.entity.Folder;
+import com.example.yoURL.domain.entity.Folder.entity.entity.Folder;
 import com.example.yoURL.domain.entity.Member.dto.SignupRequest;
 import com.example.yoURL.domain.entity.Member.exception.EmptyNameException;
 import com.example.yoURL.domain.entity.Member.exception.TooLongNameException;

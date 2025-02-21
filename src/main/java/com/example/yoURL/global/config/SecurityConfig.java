@@ -55,6 +55,7 @@ public class SecurityConfig {
                                         .requestMatchers("/error").permitAll()
                                         .requestMatchers("/health-check").permitAll()
                                         .requestMatchers("/api/v1/members/*").permitAll()
+                                        .requestMatchers("/api/v1/**").authenticated()
                                         .anyRequest().authenticated()
 
                 )
