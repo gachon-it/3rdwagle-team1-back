@@ -50,6 +50,9 @@ public class ArticleServiceImpl implements ArticleService {
                 // 3. Article 엔티티에 name, imageUrl 설정
                 article.setName(nameAndImage.getName());
                 article.setImageUrl(nameAndImage.getImageUrl());
+                article.setUrl(nameAndImage.getUrl());
+
+
                 log.info("Successfully fetched name and image: Name={}, ImageUrl={}", nameAndImage.getName(), nameAndImage.getImageUrl()); // Added success log
             } catch (Exception e){
                 log.error("Error fetching name and image from URL: {}", request.getUrl(), e); // Improved error logging, including URL and exception
@@ -60,6 +63,7 @@ public class ArticleServiceImpl implements ArticleService {
 
 
             //4. db 저장
+            article.setCreatedAt(LocalDateTime.now());
             Article savedArticle = articleRepository.save(article);
             log.info("Article saved successfully with ID: {}", savedArticle.getId()); // Added success log for saving
             return savedArticle.getId(); // 생성된 게시물 ID 반환
