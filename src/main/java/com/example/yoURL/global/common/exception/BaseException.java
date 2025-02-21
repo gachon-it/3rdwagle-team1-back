@@ -1,12 +1,14 @@
 package com.example.yoURL.global.common.exception;
 
+import org.springframework.http.HttpStatus;
+
 public class BaseException extends RuntimeException {
 
     private final int errorCode;
 
-    public BaseException(int errorCode, String message) {
+    public BaseException(HttpStatus httpStatus, String message) {
         super(message);
-        this.errorCode = errorCode;
+        this.errorCode = httpStatus.value();
     }
 
     public int getErrorCode() {

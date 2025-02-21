@@ -53,6 +53,8 @@ public class SecurityConfig {
                                         .requestMatchers("/favicon.ico").permitAll()
                                         .requestMatchers("/ws", "/ws/**").permitAll()
                                         .requestMatchers("/error").permitAll()
+                                        .requestMatchers("/health-check").permitAll()
+                                        .requestMatchers("/api/v1/members/*").permitAll()
                                         .anyRequest().authenticated()
 
                 )
