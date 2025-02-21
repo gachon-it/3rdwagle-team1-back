@@ -83,7 +83,7 @@ public class JwtProvider {
         }
     }
 
-    public JwtResponse reGenerateToken(String refreshToken, String email) {
+    public JwtResponse reGenerateToken(String refreshToken, String name) {
 
         return null;
     }
@@ -91,8 +91,8 @@ public class JwtProvider {
 
     public Authentication getAuthentication(String token) {
         Claims claims = parseToken(token);
-        String email = claims.getSubject();
+        String name = claims.getSubject();
 
-        return new UsernamePasswordAuthenticationToken(email, null, Collections.emptyList());
+        return new UsernamePasswordAuthenticationToken(name, null, Collections.emptyList());
     }
 }
