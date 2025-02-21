@@ -1,6 +1,7 @@
 package com.example.yoURL.domain.entity.Folder.entity.repository;
 
 import com.example.yoURL.domain.entity.Folder.entity.entity.Folder;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
@@ -15,7 +16,8 @@ public interface FolderRepository extends JpaRepository<Folder, Long> {
 
     // 특정 폴더를 조회
     Optional<Folder> findById(Long id);
-    Optional<Folder> findByName(String name);
+
     Optional<Folder> findByNameAndMemberId(String name,Long id);
-    Optional<Folder> findByMemberIdAndName(Long memberId,String name);
+
+    List<Folder> findAllByMemberId(Long memberId);
 }
