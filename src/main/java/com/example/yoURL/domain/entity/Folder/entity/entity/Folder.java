@@ -32,10 +32,6 @@ public class Folder extends BaseEntity {
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
-    // ✅ 북마크 상태 (0: 북마크 안됨, 1: 북마크 됨)
-    @Column(name = "bookmark", nullable = false)
-    private int bookmark = 0;
-
 
     @ManyToMany(mappedBy = "likes")
     private List<Member> likeMember = new ArrayList<>();
