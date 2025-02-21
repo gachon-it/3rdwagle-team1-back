@@ -60,7 +60,7 @@ public class FolderController {
         return ApiResponse.response(FOLDER_LIKE_SUCCESS.getCode(), FOLDER_LIKE_SUCCESS.getMessage());
     }
 
-    @DeleteMapping("/like/{id}")//관심 게시물 등록 해제
+    @DeleteMapping("/like/{id}")
     @Operation(summary = "폴더 관심 등록 해제")
     public ApiResponse<Void> deleteLikeFolder(@PathVariable Long id, @AuthenticationPrincipal String name) {
         folderLikeService.deleteLikeFolder(id, name);
