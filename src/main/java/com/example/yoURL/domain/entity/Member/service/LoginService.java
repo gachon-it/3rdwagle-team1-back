@@ -23,6 +23,6 @@ public class LoginService {
         String token = jwtProvider.generateAccessToken(name);
         response.setHeader("Authorization", "Bearer " + token);
 
-        return new LoginResponse(member.getId(), token);
+        return new LoginResponse(member.getId(), member.getName(), token);
     }
 }
