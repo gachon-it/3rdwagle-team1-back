@@ -30,9 +30,12 @@ public class ArticleRequestDTO {
         @NotNull
         private Article.Rating rating; // Enum 타입
 
+        private long folderId;
+
         // DTO를 Entity로 변환 (folder, url, description, rating만 사용)
         public Article toEntity(Member member) {
             return Article.builder()
+                    .folderId(this.folderId)
                     .url(this.url)
                     .description(this.description)
                     .rating(this.rating)
