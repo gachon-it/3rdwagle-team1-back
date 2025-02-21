@@ -1,5 +1,6 @@
 package com.example.yoURL.domain.entity.Member.entity;
 
+import com.example.yoURL.domain.entity.Article.entity.Article;
 import com.example.yoURL.domain.entity.Folder.entity.entity.Folder;
 import com.example.yoURL.domain.entity.Member.dto.SignupRequest;
 import com.example.yoURL.domain.entity.Member.exception.EmptyNameException;
@@ -34,6 +35,10 @@ public class Member extends BaseEntity {
     @JoinTable(name = "likes", joinColumns = @JoinColumn(name = "member_id"), inverseJoinColumns = @JoinColumn(name = "folder_id"))
     private List<Folder> likes = new ArrayList<>();
 
+    @ManyToMany
+    @JoinTable(name = "member_liked_articles", joinColumns = @JoinColumn(name = "member_id"), inverseJoinColumns = @JoinColumn(name = "article_id"))
+    private List<Article> likedArticles = new ArrayList<>();
+
     public Member(String name) {
         this.name = name;
     }
@@ -61,6 +66,16 @@ public class Member extends BaseEntity {
 
     public void deleteLike(Folder folder) {
         likes.remove(folder);
+    }
+
+    public void addLike(Article article) {
+        if (!likedArticles.contains(article)) {
+            likedArticles.add(article);
+        }
+    }
+
+    public void deleteLike(Article article) {
+        likedArticles.remove(article);
     }
 }
 

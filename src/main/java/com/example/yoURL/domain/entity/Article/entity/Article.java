@@ -51,6 +51,8 @@ public class Article {
     @JoinColumn(name = "folder_id")
     private Folder folder;
 
+
+
     public enum Rating {
         ONE, TWO, THREE, FOUR, FIVE
     }
