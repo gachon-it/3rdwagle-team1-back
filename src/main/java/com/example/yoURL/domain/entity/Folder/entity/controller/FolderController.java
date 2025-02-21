@@ -2,10 +2,12 @@ package com.example.yoURL.domain.entity.Folder.entity.controller;
 
 import com.example.yoURL.domain.entity.Folder.entity.dto.FolderDTO;
 import com.example.yoURL.domain.entity.Folder.entity.response.FolderResponse;
+import com.example.yoURL.domain.entity.Folder.entity.service.FolderLikeService;
 import com.example.yoURL.domain.entity.Folder.entity.service.FolderService;
 import com.example.yoURL.global.common.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import static com.example.yoURL.domain.entity.Folder.entity.controller.ResponseMessage.*;
@@ -16,6 +18,7 @@ import static com.example.yoURL.domain.entity.Folder.entity.controller.ResponseM
 public class FolderController {
 
     private final FolderService folderService;
+    private final FolderLikeService folderLikeService;
 
     // ✅ 폴더 생성
     @Operation(summary = "폴더 생성")
@@ -41,4 +44,17 @@ public class FolderController {
         return ApiResponse.response(DELETE_SUCCESS.getCode(), DELETE_SUCCESS.getMessage(), "삭제 완료");
     }
 
+    @PostMapping("/like/{id}")
+    @Operation(summary = "폴더 관심 등록")
+    public ApiResponse<Void> addLikeFolder(@PathVariable Long id, @AuthenticationPrincipal String name) {
+        folderLikeService.addLikeFolder(id, name);
+        return ApiResponse.response(FOLDER_LIKE_SUCCESS.getCode(), FOLDER_LIKE_SUCCESS.getMessage());
+    }
+
+    @DeleteMapping("/like/{id}")//관심 게시물 등록 해제
+    @Operation(summary = "폴더 관심 등록 해제")
+    public ApiResponse<Void> deleteLikeFolder(@PathVariable Long id, @AuthenticationPrincipal String name) {
+        folderLikeService.deleteLikeFolder(id, name);
+        return ApiResponse.response(FOLDER_LIKE_REMOVE_SUCCESS.getCode(), FOLDER_LIKE_REMOVE_SUCCESS.getMessage());
+    }
 }
