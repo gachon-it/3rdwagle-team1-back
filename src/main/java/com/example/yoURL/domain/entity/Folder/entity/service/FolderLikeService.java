@@ -19,7 +19,7 @@ public class FolderLikeService {
     private final FolderRepository folderRepository;
     private final MemberRepository memberRepository;
 
-    @Transactional//관심 게시물 등록
+    @Transactional
     public void addLikeFolder(Long id, String name) {
         Member member = memberRepository.findByName(name)
                 .orElseThrow(MemberNotFoundException::new);
@@ -33,7 +33,7 @@ public class FolderLikeService {
         memberRepository.save(member);
     }
 
-    @Transactional//관심 게시물 삭제
+    @Transactional
     public void deleteLikeFolder(Long id, String name) {
         Member member = memberRepository.findByName(name)
                 .orElseThrow(MemberNotFoundException::new);
