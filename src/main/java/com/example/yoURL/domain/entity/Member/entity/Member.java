@@ -1,51 +1,51 @@
 package com.example.yoURL.domain.entity.Member.entity;
 
 import com.example.yoURL.domain.entity.Folder.entity.Folder;
+import com.example.yoURL.domain.entity.Member.dto.SignupRequest;
+import com.example.yoURL.domain.entity.Member.exception.EmptyNameException;
+import com.example.yoURL.domain.entity.Member.exception.TooLongNameException;
+import com.example.yoURL.global.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
 @Table(name = "member")
 @Getter
 @Setter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class Member {
+public class Member extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
     private Long id;
 
-    @Column(name = "name", length = 50)
+    @Column(name = "name", length = 10, nullable = false)
     private String name;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "role")
-    private Role role;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status")
-    private Status status;
-
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Folder> folders;
 
-    public enum Role {
-        ADMIN, USER
+    public Member(String name) {
+        this.name = name;
     }
 
-    public enum Status {
-        ACTIVE, INACTIVE
+    public static Member create(SignupRequest request) {
+        Member member = new Member(request.name());
+        member.validateName();
+        return member;
+    }
+
+    public void validateName() {
+        if (this.name == null || this.name.trim().isEmpty()) {
+            throw new EmptyNameException();
+        }
+        if (this.name.length() > 9) {
+            throw new TooLongNameException();
+        }
     }
 }
 
