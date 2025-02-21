@@ -40,13 +40,14 @@ public class FolderService {
 
         return FolderResponse.of(
                 savedFolder.getId(),
-                savedFolder.getParentFolder() != null ? savedFolder.getParentFolder().getId() : null,
                 savedFolder.getName()
         );
     }
 
     // ✅ 폴더 수정 (이름 변경)
     public FolderResponse updateFolder(Long folderId, String newName) {
+
+
         Folder folder = folderRepository.findById(folderId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "폴더를 찾을 수 없습니다."));
 
@@ -54,16 +55,20 @@ public class FolderService {
 
         return FolderResponse.of(
                 folder.getId(),
-                folder.getParentFolder() != null ? folder.getParentFolder().getId() : null,
                 folder.getName()
         );
     }
 
-    // ✅ 폴더 삭제
-    public void deleteFolder(String name) {
-        Folder folder = folderRepository.findByName(name)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "폴더를 찾을 수 없습니다."));
 
-        folderRepository.delete(folder);
+    public void deleteFolder(Long memberId, String name) {
+    // Ensure the folder belongs to the authenticated member
+    Folder folder = folderRepository.findByNameAndMemberId(name, memberId)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 유저의 폴더를 찾을 수 없습니다."));
+
+    folderRepository.delete(folder);
+}
+
+    public FolderRepository getFolderRepository() {
+        return folderRepository;
     }
 }

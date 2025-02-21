@@ -1,5 +1,6 @@
 package com.example.yoURL.domain.entity.Folder.entity.dto;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -9,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UpdateDTO {
+public class DeleteDTO {
     private String name;
     private Long id;
 }
