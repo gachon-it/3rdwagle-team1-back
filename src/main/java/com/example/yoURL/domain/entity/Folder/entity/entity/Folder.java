@@ -36,6 +36,12 @@ public class Folder extends BaseEntity {
     @Column(name = "bookmark", nullable = false)
     private int bookmark = 0;
 
+    @OneToMany(mappedBy = "folder", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Article> articles = new ArrayList<>();  // ✅ NPE 방지
+
+    @ManyToMany(mappedBy = "likes")
+    private List<Member> likeMember = new ArrayList<>();
+
     // 폴더 이름 변경 메서드
     public void rename(String newName) {
         this.name = newName;

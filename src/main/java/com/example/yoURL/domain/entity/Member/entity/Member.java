@@ -6,6 +6,7 @@ import com.example.yoURL.domain.entity.Member.exception.EmptyNameException;
 import com.example.yoURL.domain.entity.Member.exception.TooLongNameException;
 import com.example.yoURL.global.common.entity.BaseEntity;
 import jakarta.persistence.*;
+import java.util.ArrayList;
 import lombok.*;
 import java.util.List;
 
@@ -29,6 +30,10 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Folder> folders;
 
+    @ManyToMany
+    @JoinTable(name = "likes", joinColumns = @JoinColumn(name = "member_id"), inverseJoinColumns = @JoinColumn(name = "folder_id"))
+    private List<Folder> likes = new ArrayList<>();
+
     public Member(String name) {
         this.name = name;
     }
@@ -46,6 +51,16 @@ public class Member extends BaseEntity {
         if (this.name.length() > 9) {
             throw new TooLongNameException();
         }
+    }
+
+    public void addLike(Folder folder) {
+        if (!likes.contains(folder)) {
+            likes.add(folder);
+        }
+    }
+
+    public void deleteLike(Folder folder) {
+        likes.remove(folder);
     }
 }
 
