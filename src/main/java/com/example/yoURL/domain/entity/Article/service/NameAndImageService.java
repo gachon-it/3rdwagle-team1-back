@@ -16,20 +16,13 @@ public class NameAndImageService {
         String imageUrl = "null";
 
         try {
-            if (!url.startsWith("http://") && !url.startsWith("https://")) {
-                url = "http://" + url;
-            }
-            if(!url.endsWith("/")){
-                url = url+"/";
-            }
+            Document doc = Jsoup.connect(url).get();
 
-                Document doc = Jsoup.connect(url).get();
+            name = doc.select("meta[property=og:title]").attr("content");
+            imageUrl = doc.select("meta[property=og:image]").attr("content");
 
-                 name = doc.select("meta[property=og:title]").attr("content");
-                 imageUrl = doc.select("meta[property=og:image]").attr("content");
-
-                log.info("제목 = {}", name);
-                log.info("썸네일 = {}", imageUrl);
+            log.info("제목 = {}", name);
+            log.info("썸네일 = {}", imageUrl);
 
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -52,3 +45,8 @@ public class NameAndImageService {
 
     }
 }
+
+
+
+
+

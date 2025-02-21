@@ -1,4 +1,3 @@
-
 package com.example.yoURL.domain.entity.Article.service;
 
 import com.example.yoURL.domain.entity.Article.dto.ArticleRequestDTO;
@@ -33,41 +32,50 @@ public class ArticleServiceImpl implements ArticleService {
 
 
 
-        @Transactional
-        public Long createArticle(ArticleRequestDTO.CreateArticle request) {
-            // 1 member 조회 (Corrected to Member)
-            Member member = memberRepository.findById(request.getMemberId())
-                    .orElseThrow(() -> new EntityNotFoundException("Member not found with id: " + request.getMemberId())); // Corrected exception message
+    @Transactional
+    public Long createArticle(ArticleRequestDTO.CreateArticle request) {
+        // 1 member 조회 (Corrected to Member)
+        Member member = memberRepository.findById(request.getMemberId())
+                .orElseThrow(() -> new EntityNotFoundException("Member not found with id: " + request.getMemberId())); // Corrected exception message
 
 
-            Article article = request.toEntity(member); // DTO -> Entity
-            log.info("Creating article: {}", article); // Added more informative log
+        Article article = request.toEntity(member); // DTO -> Entity
+        log.info("Creating article: {}", article); // Added more informative log
+        String url = request.getUrl();
 
-            try{
-                // 2. URL로부터 name, imageUrl 가져오기
-                NameAndImageService.NameAndImage nameAndImage = nameAndImageService.fetchNameAndImage(request.getUrl());
+        try{
+            // 2. URL로부터 name, imageUrl 가져오기
 
-                // 3. Article 엔티티에 name, imageUrl 설정
-                article.setName(nameAndImage.getName());
-                article.setImageUrl(nameAndImage.getImageUrl());
-                article.setUrl(nameAndImage.getUrl());
-
-
-                log.info("Successfully fetched name and image: Name={}, ImageUrl={}", nameAndImage.getName(), nameAndImage.getImageUrl()); // Added success log
-            } catch (Exception e){
-                log.error("Error fetching name and image from URL: {}", request.getUrl(), e); // Improved error logging, including URL and exception
-                article.setName(null); // Or set to a default value like "" if preferred
-                article.setImageUrl(null); // Or set to a default value like "" if preferred
-                log.warn("Using default name and imageUrl due to fetching error."); // Added warning log
+            if (!url.startsWith("http://") && !url.startsWith("https://")) {
+                url = "http://" + url;
+            }
+            if(!url.endsWith("/")){
+                url = url+"/";
             }
 
+            NameAndImageService.NameAndImage nameAndImage = nameAndImageService.fetchNameAndImage(url);
 
-            //4. db 저장
-            article.setCreatedAt(LocalDateTime.now());
-            Article savedArticle = articleRepository.save(article);
-            log.info("Article saved successfully with ID: {}", savedArticle.getId()); // Added success log for saving
-            return savedArticle.getId(); // 생성된 게시물 ID 반환
+            // 3. Article 엔티티에 name, imageUrl 설정
+            article.setName(nameAndImage.getName());
+            article.setImageUrl(nameAndImage.getImageUrl());
+            article.setUrl(nameAndImage.getUrl());
+
+
+            log.info("Successfully fetched name and image: Name={}, ImageUrl={}", nameAndImage.getName(), nameAndImage.getImageUrl()); // Added success log
+        } catch (Exception e){
+            log.error("Error fetching name and image from URL: {}", request.getUrl(), e); // Improved error logging, including URL and exception
+            article.setName(null); // Or set to a default value like "" if preferred
+            article.setImageUrl(null); // Or set to a default value like "" if preferred
+            log.warn("Using default name and imageUrl due to fetching error."); // Added warning log
         }
+
+
+        //4. db 저장
+        article.setCreatedAt(LocalDateTime.now());
+        Article savedArticle = articleRepository.save(article);
+        log.info("Article saved successfully with ID: {}", savedArticle.getId()); // Added success log for saving
+        return savedArticle.getId(); // 생성된 게시물 ID 반환
+    }
 
 
 
