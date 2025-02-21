@@ -49,10 +49,14 @@ public class FolderService {
     }
 
     // ✅ 폴더 수정 (이름 변경)
-    public FolderResponse updateFolder(Long folderId, String newName) {
-
+    public FolderResponse updateFolder(Long memberId, Long folderId, String newName) {
         Folder folder = folderRepository.findById(folderId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "폴더를 찾을 수 없습니다."));
+
+        // ✅ 폴더 소유자(memberId) 확인
+        if (!folder.getMember().getId().equals(memberId)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "해당 폴더를 수정할 권한이 없습니다.");
+        }
 
         folder.rename(newName);
 
@@ -61,6 +65,7 @@ public class FolderService {
                 folder.getName()
         );
     }
+
 
     // ✅ 모든 폴더 조회 (게시물 제외)
     public List<FolderResponse> getAllFolders() {
