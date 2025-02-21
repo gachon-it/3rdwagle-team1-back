@@ -46,13 +46,14 @@ public class FolderController {
         return ApiResponse.response(DELETE_SUCCESS.getCode(), DELETE_SUCCESS.getMessage(), "삭제 완료");
     }
 
-    // ✅ 개별 폴더 조회 (게시물 제외)
-    @Operation(summary = "개별 폴더 조회")
+    // ✅ 전체 폴더 조회 (게시물 제외)
+    @Operation(summary = "전체 폴더 조회")
     @GetMapping("/{id}")
     public ApiResponse<List<FolderResponse>> getAllFolders() {
         List<FolderResponse> folders = folderService.getAllFolders();
         return ApiResponse.response(200, "폴더 조회 성공", folders);
     }
+
     @PostMapping("/like/{id}")
     @Operation(summary = "폴더 관심 등록")
     public ApiResponse<Void> addLikeFolder(@PathVariable Long id, @AuthenticationPrincipal String name) {
