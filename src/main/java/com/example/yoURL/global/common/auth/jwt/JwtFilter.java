@@ -1,6 +1,8 @@
 package com.example.yoURL.global.common.auth.jwt;
 
 import static com.example.yoURL.global.common.auth.exception.ErrorMessage.INVALID_TOKEN;
+
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -34,8 +36,11 @@ public class JwtFilter extends OncePerRequestFilter {
 
                 log.debug("Authentication set in SecurityContext: {}", authentication);
             }
+        } catch (ExpiredJwtException e) {
+            log.error("JWT 만료됨: {}", e.getMessage());
+            request.setAttribute("jwtException", INVALID_TOKEN.getCode());
         } catch (JwtException e) {
-            log.info("error token: {}", e.getMessage());
+            log.error("JWT 검증 실패: {}", e.getMessage());
             request.setAttribute("jwtException", INVALID_TOKEN.getCode());
         }
         filterChain.doFilter(request, response);
