@@ -37,11 +37,11 @@ public class JwtProvider {
         this.key = new SecretKeySpec(jwtKey.getBytes(), SignatureAlgorithm.HS256.getJcaName());
     }
 
-    public String generateAccessToken(String email) {
+    public String generateAccessToken(String name) {
         final Date now = new Date();
         final Date expiration = new Date(now.getTime() + accessTokenExpirationTime);
         return Jwts.builder()
-                .setSubject(email)
+                .setSubject(name)
                 .setIssuedAt(now)
                 .setExpiration(expiration)
                 .signWith(key)
