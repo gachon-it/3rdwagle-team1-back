@@ -1,5 +1,6 @@
-package com.example.yoURL.domain.entity;
+package com.example.yoURL.domain.entity.Article.entity;
 
+import com.example.yoURL.domain.entity.Folder.entity.Folder;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;

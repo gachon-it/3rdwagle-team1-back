@@ -1,5 +1,7 @@
-package com.example.yoURL.domain.entity;
+package com.example.yoURL.domain.entity.Folder.entity;
 
+import com.example.yoURL.domain.entity.Article.entity.Article;
+import com.example.yoURL.domain.entity.Member.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.List;
