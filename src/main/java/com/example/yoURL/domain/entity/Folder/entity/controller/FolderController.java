@@ -8,6 +8,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import static com.example.yoURL.domain.entity.Folder.entity.controller.ResponseMessage.*;
 
 @RestController
@@ -41,4 +43,11 @@ public class FolderController {
         return ApiResponse.response(DELETE_SUCCESS.getCode(), DELETE_SUCCESS.getMessage(), "삭제 완료");
     }
 
+    // ✅ 모든 폴더 조회 (게시물 제외)
+    @Operation(summary = "모든 폴더 조회")
+    @GetMapping("/{id}")
+    public ApiResponse<List<FolderResponse>> getAllFolders() {
+        List<FolderResponse> folders = folderService.getAllFolders();
+        return ApiResponse.response(200, "폴더 조회 성공", folders);
+    }
 }

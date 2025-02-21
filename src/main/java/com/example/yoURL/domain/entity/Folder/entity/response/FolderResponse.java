@@ -11,7 +11,7 @@ public class FolderResponse {
     private String name;
 
     @Builder
-    private FolderResponse(Long id, Long parentFolderId, String name) {
+    private FolderResponse(Long id, String name) {
         this.id = id;
         this.name = name;
     }

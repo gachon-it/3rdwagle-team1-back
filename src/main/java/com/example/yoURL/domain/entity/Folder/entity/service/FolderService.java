@@ -11,6 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -47,7 +50,6 @@ public class FolderService {
     // ✅ 폴더 수정 (이름 변경)
     public FolderResponse updateFolder(Long folderId, String newName) {
 
-
         Folder folder = folderRepository.findById(folderId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "폴더를 찾을 수 없습니다."));
 
@@ -59,6 +61,14 @@ public class FolderService {
         );
     }
 
+    // ✅ 모든 폴더 조회 (게시물 제외)
+    public List<FolderResponse> getAllFolders() {
+        List<Folder> folders = folderRepository.findAll();
+        return folders.stream()
+                .map(folder -> FolderResponse.of(folder.getId(), folder.getName())) // 게시물 제외
+                .collect(Collectors.toList());
+    }
+
 
     public void deleteFolder(Long memberId, String name) {
     // Ensure the folder belongs to the authenticated member
@@ -68,7 +78,4 @@ public class FolderService {
     folderRepository.delete(folder);
 }
 
-    public FolderRepository getFolderRepository() {
-        return folderRepository;
-    }
 }
