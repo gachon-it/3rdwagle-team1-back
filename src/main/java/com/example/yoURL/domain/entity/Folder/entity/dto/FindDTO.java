@@ -5,12 +5,13 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 
 @Getter
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class FolderDTO {
-    private String name;
+public class FindDTO {
     private Long id;
+    private LocalDate date;
 }

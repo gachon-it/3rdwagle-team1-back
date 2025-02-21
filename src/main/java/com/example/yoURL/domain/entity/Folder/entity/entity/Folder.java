@@ -1,11 +1,12 @@
 package com.example.yoURL.domain.entity.Folder.entity.entity;
 
-import com.example.yoURL.domain.entity.Article.entity.Article;
 import com.example.yoURL.domain.entity.Member.entity.Member;
 import com.example.yoURL.global.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +33,6 @@ public class Folder extends BaseEntity {
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
-
     @ManyToMany(mappedBy = "likes")
     private List<Member> likeMember = new ArrayList<>();
 
@@ -41,4 +41,11 @@ public class Folder extends BaseEntity {
         this.name = newName;
     }
 
+    @Column(name = "date")
+    private LocalDate date;
+
+
+    // createDate와 updateDate는 BaseEntity에서 상속받아서 자동으로 관리됨
+    // 따라서 getCreatedAt()과 getUpdatedAt() 메서드는 필요하지 않음.
+    // BaseEntity에서 제공되는 메서드를 직접 사용할 수 있음
 }

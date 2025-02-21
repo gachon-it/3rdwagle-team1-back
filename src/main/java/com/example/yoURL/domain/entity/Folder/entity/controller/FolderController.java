@@ -1,5 +1,6 @@
 package com.example.yoURL.domain.entity.Folder.entity.controller;
 
+import com.example.yoURL.domain.entity.Folder.entity.dto.CreateFolderDTO;
 import com.example.yoURL.domain.entity.Folder.entity.dto.FolderDTO;
 import com.example.yoURL.domain.entity.Folder.entity.dto.UpdateDTO;
 import com.example.yoURL.domain.entity.Folder.entity.response.FolderResponse;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.example.yoURL.domain.entity.Folder.entity.controller.ResponseMessage.*;
@@ -26,8 +28,8 @@ public class FolderController {
     // ✅ 폴더 생성
     @Operation(summary = "폴더 생성")
     @PostMapping("/create")
-    public ApiResponse<FolderResponse> createFolder(@RequestBody FolderDTO req) {
-        FolderResponse folder = folderService.createFolder(req.getId(), req.getName());
+    public ApiResponse<FolderResponse> createFolder(@RequestBody CreateFolderDTO req) {
+        FolderResponse folder = folderService.createFolder(req.getId(), req.getName(), req.getDate());
         return ApiResponse.response(CREATE_SUCCESS.getCode(), CREATE_SUCCESS.getMessage(), folder);
     }
 
@@ -47,13 +49,17 @@ public class FolderController {
         return ApiResponse.response(DELETE_SUCCESS.getCode(), DELETE_SUCCESS.getMessage(), "삭제 완료");
     }
 
-    // ✅ 전체 폴더 조회 (게시물 제외)
-    @Operation(summary = "전체 폴더 조회")
-    @GetMapping("/{id}")
-    public ApiResponse<List<FolderResponse>> getAllFolders() {
-        List<FolderResponse> folders = folderService.getAllFolders();
-        return ApiResponse.response(200, "폴더 조회 성공", folders);
-    }
+// ✅ 전체 폴더 조회 (게시물 제외)
+@Operation(summary = "전체 폴더 조회")
+@GetMapping("/{id}")
+public ApiResponse<List<FolderResponse>> getAllFolders(
+        @PathVariable Long id,    // Use @PathVariable for the ID from the path,  // Use @RequestParam for optional query parameter
+        @AuthenticationPrincipal String name
+) {
+    List<FolderResponse> folderList = folderService.getAllFolders(id, name);  // Correctly call the service to get the list of folders
+    return ApiResponse.response(200, "폴더 조회 성공", folderList);  // Return the list in ApiResponse
+}
+
 
     @PostMapping("/like/{id}")
     @Operation(summary = "폴더 관심 등록")
