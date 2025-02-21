@@ -16,22 +16,36 @@ public class Article {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "article_id")
     private Long id;
-
-    private String name;
-    private String url;
-    private String description;
-    private String imageUrl;
-
-    @Enumerated(EnumType.STRING)
-    private Rating rating;
-
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "folder_id", nullable = false)
     private Folder folder;
+
+    @Column(name = "name", length = 100)
+    private String name;
+
+    @Column(name = "url", length = 250)
+    private String url;
+
+    @Column(name = "description", length = 250)
+    private String description;
+
+    @Column(name = "image_url", length = 250)
+    private String imageUrl;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "rating")
+    private Rating rating;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
+
 
     public enum Rating {
         ONE, TWO, THREE, FOUR, FIVE

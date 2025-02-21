@@ -19,8 +19,10 @@ public class Folder {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "folder_id")
     private Long id;
 
+    @Column(name = "name", length = 100)
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -32,8 +34,18 @@ public class Folder {
     private Folder parentFolder;
 
     @OneToMany(mappedBy = "parentFolder", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Folder> subFolders;
+    private List<Folder> childFolders;
 
     @OneToMany(mappedBy = "folder", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Article> articles;
+
+
+    // 부모 폴더 추가 메서드
+    public void setParentFolder(Folder parentFolder) {
+        this.parentFolder = parentFolder;
+        if(parentFolder != null){
+            parentFolder.getChildFolders().add(this);
+        }
+    }
+
 }
