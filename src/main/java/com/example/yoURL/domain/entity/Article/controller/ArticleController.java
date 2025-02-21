@@ -39,14 +39,14 @@ public class ArticleController {
 
     @PostMapping("/article")
     @Operation(summary = "게시물 등록 API")
-    public ApiResponse<Void> createArticle(@RequestBody @Valid ArticleRequestDTO.CreateArticle request) {
+    public ApiResponse<Long> createArticle(@RequestBody @Valid ArticleRequestDTO.CreateArticle request) {
         if (articleRepository.existsByUrl(request.getUrl())) {
             return ApiResponse.response(ADD_ARTICLE_FAILED.getCode(), "An article with this URL already exists.");
         }
 
-        articleService.createArticle(request);
+        Long articleId = articleService.createArticle(request);
 
-        return ApiResponse.response(ADD_ARTICLE_SUCCESS.getCode(), ADD_ARTICLE_SUCCESS.getMessage());
+        return ApiResponse.response(ADD_ARTICLE_SUCCESS.getCode(), ADD_ARTICLE_SUCCESS.getMessage(), articleId);
 
     }
 
